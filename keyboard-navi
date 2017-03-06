@@ -1,0 +1,64 @@
+// ==UserScript==
+// @name         FFnet Keyboard Controls
+// @namespace    http://fanfiction.net/
+// @version      0.1
+// @description  Change pages with arrow keys
+// @author       You
+// @match        https://www.fanfiction.net/s/*
+// @grant        none
+// @run-at       document-end
+// @require http://code.jquery.com/jquery-latest.js
+// ==/UserScript==
+
+const RIGHT_KEY = 39;
+const LEFT_KEY = 37;
+
+window.addEventListener("keyup", parse, false);
+
+// Keyboard handler
+function parse(e) {
+    switch(e.keyCode) {
+        case RIGHT_KEY:
+            movePage(1);
+            break;
+        case LEFT_KEY:
+            movePage(-1);
+            break;
+    }
+}
+function movePage(count) {
+    var story_id;
+    var chapter_id;
+    var story_name;
+    var page = window.location.href;
+    // Split the url into tokens
+    var page_stripped = page.split("/");
+    // Find the story resource token and use it as the "head".
+    var counter = page_stripped.indexOf("s");
+    // Get the story Id string
+    story_id = page_stripped[counter+1];
+    // Get the current chapter id string and move by how many pages given by count
+    chapter_id = Number(page_stripped[counter+2]) + count;
+    // Append the story name at the end of the url (functionally does nothing but keeps the formatting the same as a url changed with button press)
+    story_name = page_stripped[counter+3];
+    if (story_name == "undefined")
+        story_name = "";
+    // Only finish operation if moved within the bounds of the first and last chapter.
+    var chselect = document.getElementById("chap_select");
+    if (chapter_id > 0 && chapter_id <= chselect.lastChild.value)
+        // Rewrite the string and use it as the new page
+        window.location = "http://www.fanfiction.net/s/" + story_id + "/" + chapter_id + "/" + story_name;
+}
+/*
+Future: user control panel
+$(document).ready( function () {
+    $head = $('head');
+    $body = $('body');
+    $body.preppend("<div id='floating-box'><input type='text' id='floating-box-input'></input></div>");
+    $menu = $('float');
+    $inputbox = $('#float-input');
+    $inputbox.keypress(function () {
+        $chapter = $(this).val();
+    });
+});
+*/
