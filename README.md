@@ -1,2 +1,5 @@
 # FFNet-Keyboard-Navigation
-Userscript to navigate chapters with arrowkeys
+Simple userscript to navigate FFNet chapters with arrowkeys.
+
+Works with Tampermonkey.
+Might work with Greasemonkey.
