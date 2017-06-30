@@ -7,13 +7,20 @@
 // @match        https://www.fanfiction.net/s/*
 // @grant        none
 // @run-at       document-end
-// @require http://code.jquery.com/jquery-latest.js
+// @require https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // ==/UserScript==
+/* jshint multistr: true */
 
 const RIGHT_KEY = 39;
 const LEFT_KEY = 37;
-
+/*
+script.onload = function() {
+    
+}
+*/
+window.jQuery310 = $.noConflict(true);
 window.addEventListener("keyup", parse, false);
+
 
 // Keyboard handler
 function parse(e) {
@@ -49,16 +56,54 @@ function movePage(count) {
         // Rewrite the string and use it as the new page
         window.location = "http://www.fanfiction.net/s/" + story_id + "/" + chapter_id + "/" + story_name;
 }
-/*
-Future: user control panel
+
+
 $(document).ready( function () {
     $head = $('head');
     $body = $('body');
-    $body.preppend("<div id='floating-box'><input type='text' id='floating-box-input'></input></div>");
-    $menu = $('float');
-    $inputbox = $('#float-input');
-    $inputbox.keypress(function () {
-        $chapter = $(this).val();
+    $body.append('<div class="container">           \
+                      <div class="floating">        \
+                          <div class="panel-item">                          \
+                              <p>Test</p>               \
+                          </div> \
+                          <div class="panel-item">\
+                            <p>Test 2</p>\
+                          </div>\
+                      </div>   \
+                  </div>');
+    $container = $('.container');
+    $floating = $('.floating');
+    //stylesheet.insertRule(".container {}");
+    $container.css({"position": "fixed",
+                   "bottom": "20px",
+                   "width": "100%",
+                   "display" : "flex",
+                   "flex-direction" : "row",
+                   "justify-content" : "center",
+                   "flex-grow": "0",
+                   "flex-basis":"content"});
+    $floating.css({"background-color" : "white",
+                  "height":"100%",
+                   "display":"flex",
+                   "min-width":"50%",
+                   "opacity" : "0.2",
+                   "flex-direction" : "row",
+                   "flex-grow": "0",
+                   "flex-basis":"content",
+                   "justify-content": "space-around",
+                   "align-items":"center"
+                  });
+    
+   
+    $floating.hover(function() {
+        $(".floating").fadeTo('fast', 1);
+    },
+                    function() {
+        $(".floating").fadeTo('fast', 0.2);
     });
+    //$menu = $('float');
+    //$inputbox = $('#float-input');
+    //$inputbox.keypress(function () {
+        //$chapter = $(this).val();
+    //});
 });
-*/
