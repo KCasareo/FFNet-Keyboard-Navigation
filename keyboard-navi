@@ -11,6 +11,8 @@
 // ==/UserScript==
 /* jshint multistr: true */
 
+
+
 const RIGHT_KEY = 39;
 const LEFT_KEY = 37;
 /*
@@ -64,10 +66,13 @@ $(document).ready( function () {
     $body.append('<div class="container">           \
                       <div class="floating">        \
                           <div class="panel-item">                          \
-                              <p>Test</p>               \
+                              <button class="panel-button" type="button" id="back-button">Back</button>               \
                           </div> \
                           <div class="panel-item">\
-                            <p>Test 2</p>\
+                            <button class="panel-button" type="button" id="home-button">Top</button>\
+                          </div>\
+                          <div class="panel-item">\
+                            <button class="panel-button" type="button" id="next-button">Next</button>\
                           </div>\
                       </div>   \
                   </div>');
@@ -82,24 +87,52 @@ $(document).ready( function () {
                    "justify-content" : "center",
                    "flex-grow": "0",
                    "flex-basis":"content"});
-    $floating.css({"background-color" : "white",
+    $floating.css({"background-color" : "grey",
+                   "background-image":"linear-gradient(90deg, #1b1b1b 0%, #6c6c6c 100%)",
                   "height":"100%",
                    "display":"flex",
                    "min-width":"50%",
-                   "opacity" : "0.2",
+                   "min-height":"75px",
+                   "opacity" : "0.1",
                    "flex-direction" : "row",
                    "flex-grow": "0",
                    "flex-basis":"content",
                    "justify-content": "space-around",
-                   "align-items":"center"
+                   "align-items":"center",
+                   "border-radius":"5px",
+                   "border":"2px inset",
+                   //"-webkit-border-image":"-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #333), color-stop(100%, #222))",
+                   //"-webkit-border-image":"-webkit-linear-gradient(left top, #1b1b1b, 0%, #6c6c6c 100%)",
+                   "border-image":"linear-gradient(135deg, #1b1b1b 20%, #6c6c6c 80%)",
+                   "border-image-slice":"20",
+                   //"moz-border-image": "moz-linear-gradient(top, #3acfd5 0%, #3a4ed5 100%)",
+                   "":""
                   });
-    
-   
+    $(".panel-button").css({ "min-width":"60px",
+                            "min-height":"60px",
+                            "border-radius":"5px",
+                            "border":"5px inset",
+                            "background-image":"linear-gradient(45deg, #1b1b1b 0%, #6c6c6c 100%",
+                            "border-image":"linear-gradient(135deg, #1b1b1b 20%, #6c6c6c 80%)",
+                            "border-image-slice":"1",
+                           });
     $floating.hover(function() {
-        $(".floating").fadeTo('fast', 1);
+        $(".floating").fadeTo('fast', 0.9);
     },
                     function() {
         $(".floating").fadeTo('fast', 0.2);
+    });
+    
+    $("#back-button").on("mouseup", function() {
+        movePage(-1);
+    });
+    
+    $("#next-button").on("mouseup", function() {
+        movePage(1);
+    });
+    
+    $("#home-button").on("mouseup", function() {
+        $body.animate({scrollTop:0}, 'fast');
     });
     //$menu = $('float');
     //$inputbox = $('#float-input');
