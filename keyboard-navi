@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         FFnet Keyboard Controls
+// @name         FFnet Control Panel
 // @namespace    http://fanfiction.net/
-// @version      0.1
+// @version      0.2
 // @description  Change pages with arrow keys
 // @author       You
 // @match        https://www.fanfiction.net/s/*
@@ -10,6 +10,12 @@
 // @require https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // ==/UserScript==
 /* jshint multistr: true */
+// TODO: Move navigation buttons to sides of page.
+
+/* Changes from 0.1
+* Only the visible UCP object will be triggered by mouseover events.
+* Parent <div> will no longer take mouse events
+*/
 
 
 
@@ -47,7 +53,11 @@ function movePage(count) {
     // Get the story Id string
     story_id = page_stripped[counter+1];
     // Get the current chapter id string and move by how many pages given by count
-    chapter_id = Number(page_stripped[counter+2]) + count;
+    // If no chapter index exists and page_stripped is undefined, assume story is at first chapter.
+    chapter_id = Number(page_stripped[counter+2]);
+    console.log(chapter_id);
+    chapter_id = isNaN(chapter_id) ? 1 : chapter_id + count;
+    console.log(chapter_id);
     // Append the story name at the end of the url (functionally does nothing but keeps the formatting the same as a url changed with button press)
     story_name = page_stripped[counter+3];
     if (story_name == "undefined")
@@ -86,10 +96,11 @@ $(document).ready( function () {
                    "flex-direction" : "row",
                    "justify-content" : "center",
                    "flex-grow": "0",
-                   "flex-basis":"content"});
+                   "flex-basis":"content",
+                   "pointer-events" : "none"});
     $floating.css({"background-color" : "grey",
                    "background-image":"linear-gradient(90deg, #1b1b1b 0%, #6c6c6c 100%)",
-                  "height":"100%",
+                   "height":"100%",
                    "display":"flex",
                    "min-width":"50%",
                    "min-height":"75px",
@@ -105,6 +116,7 @@ $(document).ready( function () {
                    //"-webkit-border-image":"-webkit-linear-gradient(left top, #1b1b1b, 0%, #6c6c6c 100%)",
                    "border-image":"linear-gradient(135deg, #1b1b1b 20%, #6c6c6c 80%)",
                    "border-image-slice":"20",
+                   "pointer-events":"auto",
                    //"moz-border-image": "moz-linear-gradient(top, #3acfd5 0%, #3a4ed5 100%)",
                    "":""
                   });
@@ -120,7 +132,7 @@ $(document).ready( function () {
         $(".floating").fadeTo('fast', 0.9);
     },
                     function() {
-        $(".floating").fadeTo('fast', 0.2);
+        $(".floating").fadeTo('fast', 0.1);
     });
     
     $("#back-button").on("mouseup", function() {
